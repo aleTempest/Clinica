@@ -33,10 +33,15 @@ public class PatientRepository implements UserUtils {
         var username = user.getUsername();
         var password = user.getPassword();
         var phoneNumber = user.getPhoneNumber();
-        var sql = "INSERT INTO USERS (first_name, last_name, username, password, phone_number, user_type)" +
-                "VALUES (" + firstName + "," + lastName + "," + phoneNumber + "," + username + ")";
-        try (var conn = this.connect();
-             var statement = conn.prepareStatement(sql)) {
+        try (var statement = this.connect().prepareStatement(
+                "INSERT INTO USERS (first_name, last_name, username, password, phone_number,user_type) " +
+                        "VALUES (?,?,?,?,?,?)")){
+            statement.setString(1,firstName);
+            statement.setString(2,lastName);
+            statement.setString(3,username);
+            statement.setString(4,password);
+            statement.setString(5,phoneNumber);
+            statement.setString(6,"patient");
             statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -64,15 +69,18 @@ public class PatientRepository implements UserUtils {
 
     @Override
     public void deleteUser(String UUID) {
-        try (PreparedStatement statement = connect().prepareStatement(
-                "DELETE FROM USERS WHERE user_id = ?;" +
-                        "DELETE FROM APPOINTMENTS WHERE user_id = ?;" +
-                        "DELETE FROM PATIENTS WHERE user_id = ?;"
-        )) {
-            for (var i = 1; i < 4; i++) {
-                statement.setString(i,UUID);
-            }
-            statement.executeUpdate();
+        try (var statement1 = connect().prepareStatement("DELETE FROM USERS WHERE user_id = ?");
+             var statement2 = connect().prepareStatement("DELETE FROM APPOINTMENTS WHERE user_id = ?");
+             var statement3 = connect().prepareStatement("DELETE FROM PATIENTS WHERE user_id = ?")) {
+
+            statement1.setString(1, UUID);
+            statement1.executeUpdate();
+
+            statement2.setString(1, UUID);
+            statement2.executeUpdate();
+
+            statement3.setString(1, UUID);
+            statement3.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -97,6 +105,6 @@ public class PatientRepository implements UserUtils {
     public static void main(String[] args) {
         var test = new PatientRepository("src/main/resources/main.db");
         var user = new Patient("1","Juan","Martinez","123123","juanito","123");
-        test.updateUser(user,"1");
+        test.addUser(user);
     }
 }
