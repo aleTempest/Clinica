@@ -40,7 +40,7 @@ public class PatientRepository implements UserUtils {
             statement.setString(2,lastName);
             statement.setString(3,username);
             statement.setString(4,password);
-            statement.setString(5,phoneNumber);
+            statement.setString(5,null);
             statement.setString(6,"patient");
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -123,7 +123,7 @@ public class PatientRepository implements UserUtils {
 
     public static void main(String[] args) {
         var test = new PatientRepository("src/main/resources/main.db");
-        var user = new Patient("1","Juan","Martinez","123123","juanito","123");
+        var user = new Patient("11","Juan","Martinez","123123","juanito","123");
         test.addUser(user);
     }
 }
