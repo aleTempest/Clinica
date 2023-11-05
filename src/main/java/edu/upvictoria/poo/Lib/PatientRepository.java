@@ -67,6 +67,25 @@ public class PatientRepository implements UserUtils {
         return null;
     }
 
+    public User searchUserByUsername(String username) {
+        try (var statement = this.connect().prepareStatement(
+                "SELECT * FROM USERS WHERE username = ?"
+        )) {
+            statement.setString(1,username);
+            var result = statement.executeQuery();
+            var id = result.getString("user_id");
+            var firstName = result.getString("first_name");
+            var lastName = result.getString("last_name");
+            var password = result.getString("password");
+            var phoneNumber = result.getString("phone_number");
+            var factory = new PatientFactory();
+            return factory.createUser(id,firstName,lastName,phoneNumber,username,password);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public void deleteUser(String UUID) {
         try (var statement1 = connect().prepareStatement("DELETE FROM USERS WHERE user_id = ?");
