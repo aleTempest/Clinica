@@ -1,6 +1,6 @@
 package edu.upvictoria.poo.Lib;
 
-public class Staff extends User {
+public abstract class Staff extends User {
     protected String degree;
     protected Float salary;
     protected String field;
@@ -11,12 +11,9 @@ public class Staff extends User {
                  String address1, String address2, String zipcode, String degree, Float salary, String field,
                  String CURP, String RFC, String area) {
         super(UUID, firstName, lastName, phoneNumber, username, password, address1, address2, zipcode);
-        this.degree = degree;
         this.salary = salary;
-        this.field = field;
         this.CURP = CURP;
         this.RFC = RFC;
-        this.area = area;
     }
 
     public String getDegree() {
