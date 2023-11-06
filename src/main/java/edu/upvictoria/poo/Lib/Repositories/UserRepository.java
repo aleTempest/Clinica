@@ -1,9 +1,11 @@
 package edu.upvictoria.poo.Lib.Repositories;
 
 import edu.upvictoria.poo.Lib.User;
+import edu.upvictoria.poo.Lib.UserFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class UserRepository <T extends User>{
     private final String DB_PATH;
@@ -12,7 +14,7 @@ public abstract class UserRepository <T extends User>{
         this.DB_PATH = path;
     }
 
-    private Connection connect() throws SQLException {
+    protected Connection connect() throws SQLException {
         var url = "jdbc:sqlite:" + this.DB_PATH;
         return DriverManager.getConnection(url);
     }
@@ -62,6 +64,38 @@ public abstract class UserRepository <T extends User>{
         statement.setString(1,user.getUUID());
         statement.executeUpdate();
     }
-    public abstract ArrayList<T> getUsers();
 
+    public <T> List<T> getUsers(String type) throws SQLException {
+        List<T> arr = new ArrayList<>();
+        var sql = "SELECT * FROM USERS_STAFF_VIEW WHERE user_type = ?";
+
+        var connection = this.connect();
+        var statement = connection.prepareStatement(sql);
+        statement.setString(1, type);
+        var result = statement.executeQuery();
+
+        while (result.next()) {
+            var id = result.getString("user_id");
+            var first_name = result.getString("first_name");
+            var last_name = result.getString("last_name");
+            var username = result.getString("username");
+            var password = result.getString("password");
+            var zipcode = result.getString("zipcode");
+            var address1 = result.getString("address1");
+            var address2 = result.getString("address2");
+            var phone_number = result.getString("phone_number");
+            var CURP = result.getString("CURP");
+            var RFC = result.getString("RFC");
+            var salary = result.getFloat("salary");
+
+            if (type.equals("DOCTOR")) {
+                arr.add((T) UserFactory.createDoctor(id, first_name, last_name, phone_number, username, password, address1, address2, zipcode, salary, CURP, RFC));
+            } else if (type.equals("PATIENT")) {
+                arr.add((T) UserFactory.createPatient(id, first_name, last_name, phone_number, username, password, type));
+            }
+        }
+
+
+        return arr;
+    }
 }

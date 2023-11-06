@@ -25,6 +25,12 @@ public abstract class User {
         this.zipcode = "";
     }
 
+    @Override
+    public String toString() {
+        return UUID + "," + firstName + "," + lastName + "," + phoneNumber + "," + username + "," + password + "," +
+                "," + type + "," + address1 + "," + address2 + "," + zipcode;
+    }
+
     public User(String UUID, String firstName, String lastName, String phoneNumber, String username, String password,
                 String address1, String address2, String zipcode, String type) {
         this(UUID, firstName, lastName, phoneNumber, username, password,type);
