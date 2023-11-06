@@ -10,22 +10,24 @@ public abstract class User {
     protected String phoneNumber;
     protected String username;
     protected String password;
+    protected String type;
 
-    public User(String UUID, String firstName, String lastName, String phoneNumber, String username, String password) {
+    public User(String UUID, String firstName, String lastName, String phoneNumber, String username, String password, String type) {
         this.UUID = UUID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.username = username;
         this.password = password;
+        this.type = type;
         this.address1 = "";
         this.address2 = "";
         this.zipcode = "";
     }
 
     public User(String UUID, String firstName, String lastName, String phoneNumber, String username, String password,
-                String address1, String address2, String zipcode) {
-        this(UUID, firstName, lastName, phoneNumber, username, password);
+                String address1, String address2, String zipcode, String type) {
+        this(UUID, firstName, lastName, phoneNumber, username, password,type);
         this.address1 = address1;
         this.address2 = address2;
         this.zipcode = zipcode;
@@ -102,5 +104,8 @@ public abstract class User {
         this.password = password;
     }
 
+    public String getType() {
+        return type;
+    }
 
 }
