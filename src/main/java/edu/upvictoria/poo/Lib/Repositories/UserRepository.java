@@ -54,7 +54,14 @@ public abstract class UserRepository <T extends User>{
         statement.executeUpdate();
     }
 
-    public abstract void deleteUser(T user);
+    public void deleteUser(T user) throws SQLException {
+        var id = user.getUUID();
+        var pragmaStatement = this.connect().createStatement();
+        var statement = this.connect().prepareStatement("DELETE FROM USERS WHERE user_id = ?");
+        pragmaStatement.executeUpdate("PRAGMA foreign_keys=ON;");
+        statement.setString(1,user.getUUID());
+        statement.executeUpdate();
+    }
     public abstract ArrayList<T> getUsers();
 
 }

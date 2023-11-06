@@ -10,11 +10,6 @@ public class PatientRepository extends UserRepository {
     }
 
     @Override
-    public void deleteUser(User user) {
-
-    }
-
-    @Override
     public ArrayList getUsers() {
         return null;
     }
