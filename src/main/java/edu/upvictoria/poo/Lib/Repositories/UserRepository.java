@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class UserRepository <T extends User>{
-    private final String DB_PATH;
+    protected final String DB_PATH;
 
     public UserRepository(String path) {
         this.DB_PATH = path;
