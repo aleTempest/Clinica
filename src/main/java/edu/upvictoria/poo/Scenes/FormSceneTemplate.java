@@ -17,7 +17,8 @@ public abstract class FormSceneTemplate extends VBoxTemplate {
 
     public FormSceneTemplate(App app) {
         super(app);
-        this.getChildren().addAll(imgLabel,usernameTxt,passwordTxt,saveBtn,link);
+        this.usernameTxt.setPromptText("Enter your username");
+        this.passwordTxt.setPromptText("Enter your password");
     }
 
     abstract boolean areFieldsEmpty();

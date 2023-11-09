@@ -11,6 +11,7 @@ import java.sql.SQLException;
 public class LoginScene extends FormSceneTemplate {
     public LoginScene(App app) {
         super(app);
+        this.getChildren().addAll(imgLabel,usernameTxt,passwordTxt,saveBtn,link);
         this.saveBtn.setOnAction(formEvent());
     }
 
